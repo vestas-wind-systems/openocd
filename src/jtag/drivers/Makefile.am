@@ -168,6 +168,9 @@ endif
 if XLNX_AXI_GPIO
 DRIVERFILES += %D%/xlnx-axi-gpio.c
 endif
+if XLNX_AXI_XVC
+DRIVERFILES += %D%/xlnx-axi-xvc.c
+endif
 if BCM2835GPIO
 DRIVERFILES += %D%/bcm2835gpio.c
 endif

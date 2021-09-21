@@ -15,6 +15,9 @@
  *   zw@superlucidity.net                                                  *
  *                                                                         *
  *   Copyright (C) 2020, Ampere Computing LLC                              *
+ *   Copyright (C) 2021 Western Digital Corporation or its affiliates      *
+ *   Jeremy Garff <jeremy.garff@wdc.com>                                   *
+ *                                                                         *
  ***************************************************************************/
 
 #ifdef HAVE_CONFIG_H
@@ -120,6 +123,9 @@ extern struct adapter_driver xlnx_pcie_xvc_adapter_driver;
 #endif
 #if BUILD_XLNX_AXI_GPIO == 1
 extern struct adapter_driver xlnx_axi_gpio_adapter_driver;
+#endif
+#if BUILD_XLNX_AXI_XVC == 1
+extern struct adapter_driver xlnx_axi_xvc_adapter_driver;
 #endif
 #if BUILD_AICE == 1
 extern struct adapter_driver aice_adapter_driver;
@@ -243,6 +249,9 @@ struct adapter_driver *adapter_drivers[] = {
 #endif
 #if BUILD_XLNX_AXI_GPIO == 1
 		&xlnx_axi_gpio_adapter_driver,
+#endif
+#if BUILD_XLNX_AXI_XVC == 1
+		&xlnx_axi_xvc_adapter_driver,
 #endif
 #if BUILD_AICE == 1
 		&aice_adapter_driver,

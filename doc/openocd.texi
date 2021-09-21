@@ -605,6 +605,12 @@ emulation model of target hardware.
 
 @item @b{xlnx_pcie_xvc}
 @* A JTAG driver exposing Xilinx Virtual Cable over PCI Express to OpenOCD as JTAG/SWD interface.
+@* Link: @url{https://www.xilinx.com/products/intellectual-property/debug-bridge.html}
+
+@item @b{xlnx_axi_xvc}
+@* A JTAG driver exposing Xilinx Virtual Cable IP to OpenOCD as JTAG/SWD interface.
+@* Link: @url{https://www.xilinx.com/products/intellectual-property/debug-bridge.html}
+@* Link: @url{https://china.xilinx.com/support/documentation/application_notes/xapp1251-xvc-zynq-petalinux.pdf}
 
 @item @b{xlnx_axi_gpio}
 @* A Xilinx AXI GPIO JTAG driver.
