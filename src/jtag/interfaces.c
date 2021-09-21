@@ -15,6 +15,9 @@
  *   zw@superlucidity.net                                                  *
  *                                                                         *
  *   Copyright (C) 2020, Ampere Computing LLC                              *
+ *   Copyright (C) 2021 Western Digital Corporation or its affiliates      *
+ *   Jeremy Garff <jeremy.garff@wdc.com>                                   *
+ *                                                                         *
  ***************************************************************************/
 
 #ifdef HAVE_CONFIG_H
@@ -31,6 +34,9 @@
  * that contain an adapter_driver structure that can added to this list.
  */
 
+#if BUILD_XLNX_AXI_XVC == 1
+extern struct adapter_driver xlnx_axi_xvc_adapter_driver;
+#endif
 /**
  * The list of built-in JTAG interfaces, containing entries for those
  * drivers that were enabled by the @c configure script.
@@ -125,6 +131,9 @@ struct adapter_driver *adapter_drivers[] = {
 #endif
 #if BUILD_XLNX_PCIE_XVC == 1
 		&xlnx_pcie_xvc_adapter_driver,
+#endif
+#if BUILD_XLNX_AXI_XVC == 1
+		&xlnx_axi_xvc_adapter_driver,
 #endif
 #if BUILD_BCM2835GPIO == 1
 		&bcm2835gpio_adapter_driver,

@@ -160,6 +160,9 @@ m4_define([LIBJAYLINK_ADAPTERS],
 m4_define([PCIE_ADAPTERS],
 	[[[xlnx_pcie_xvc], [Xilinx XVC/PCIe], [XLNX_PCIE_XVC]]])
 
+m4_define([AXI_ADAPTERS],
+	[[[xlnx_axi_xvc], [Xilinx XVC/AXI], [XLNX_AXI_XVC]]])
+
 m4_define([SERIAL_PORT_ADAPTERS],
 	[[[buspirate], [Bus Pirate], [BUS_PIRATE]]])
 
@@ -367,6 +370,10 @@ AC_ARG_ENABLE([sysfsgpio],
   AS_HELP_STRING([--enable-sysfsgpio], [Enable building support for programming driven via sysfs gpios.]),
   [build_sysfsgpio=$enableval], [build_sysfsgpio=no])
 
+AC_ARG_ENABLE([xlnx_axi_xvc],
+  AS_HELP_STRING([--enable-xlnx-axi-xvc], [Enable building support for Xilinx XVC/AXI.]),
+  [build_xlnx_axi_xvc=$enableval], [build_xlnx_axi_xvc=no])
+
 AS_CASE([$host_os],
   [linux*], [
     is_linux=yes
@@ -374,6 +381,10 @@ AS_CASE([$host_os],
   [
     AS_IF([test "x$build_sysfsgpio" = "xyes"], [
       AC_MSG_ERROR([sysfsgpio is only available on linux])
+    ])
+
+    AS_IF([test "x$build_xlnx_axi_xvc" = "xyes"], [
+      AC_MSG_ERROR([xlnx_axi_xvc is only available on linux])
     ])
 
     AS_CASE([$host_os], [freebsd*], [],
@@ -632,6 +643,13 @@ AS_IF([test "x$build_sysfsgpio" = "xyes"], [
   AC_DEFINE([BUILD_SYSFSGPIO], [0], [0 if you don't want SysfsGPIO driver.])
 ])
 
+AS_IF([test "x$build_xlnx_axi_xvc" = "xyes"], [
+  build_xlnx_axi_xvc=yes
+  AC_DEFINE([BUILD_XLNX_AXI_XVC], [1], [1 if you want the Xilinx XVC/AXI driver.])
+], [
+  AC_DEFINE([BUILD_XLNX_AXI_XVC], [0], [0 if you don't want Xilinx XVC/AXI driver.])
+])
+
 PKG_CHECK_MODULES([LIBUSB1], [libusb-1.0], [
 	use_libusb1=yes
 	AC_DEFINE([HAVE_LIBUSB1], [1], [Define if you have libusb-1.x])
@@ -782,6 +800,7 @@ AM_CONDITIONAL([AMTJTAGACCEL], [test "x$build_amtjtagaccel" = "xyes"])
 AM_CONDITIONAL([GW16012], [test "x$build_gw16012" = "xyes"])
 AM_CONDITIONAL([REMOTE_BITBANG], [test "x$build_remote_bitbang" = "xyes"])
 AM_CONDITIONAL([SYSFSGPIO], [test "x$build_sysfsgpio" = "xyes"])
+AM_CONDITIONAL([XLNX_AXI_XVC], [test "x$build_xlnx_axi_xvc" = "xyes"])
 AM_CONDITIONAL([USE_LIBUSB1], [test "x$use_libusb1" = "xyes"])
 AM_CONDITIONAL([IS_CYGWIN], [test "x$is_cygwin" = "xyes"])
 AM_CONDITIONAL([IS_MINGW], [test "x$is_mingw" = "xyes"])
@@ -874,7 +893,7 @@ echo --------------------------------------------------
 m4_foreach([adapter], [USB1_ADAPTERS,
 	HIDAPI_ADAPTERS, HIDAPI_USB1_ADAPTERS, LIBFTDI_ADAPTERS,
 	LIBFTDI_USB1_ADAPTERS,
-	LIBGPIOD_ADAPTERS,
+	LIBGPIOD_ADAPTERS, AXI_ADAPTERS,
 	LIBJAYLINK_ADAPTERS, PCIE_ADAPTERS, SERIAL_PORT_ADAPTERS,
 	DUMMY_ADAPTER,
 	OPTIONAL_LIBRARIES,
