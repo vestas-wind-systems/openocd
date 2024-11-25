@@ -156,6 +156,9 @@ m4_define([LIBJAYLINK_ADAPTERS],
 m4_define([PCIE_ADAPTERS],
 	[[[xlnx_pcie_xvc], [Xilinx XVC/PCIe], [XLNX_PCIE_XVC]]])
 
+m4_define([AXI_ADAPTERS],
+	[[[xlnx_axi_gpio], [Xilinx AXI GPIO], [XLNX_AXI_GPIO]]])
+
 m4_define([SERIAL_PORT_ADAPTERS],
 	[[[buspirate], [Bus Pirate], [BUS_PIRATE]]])
 
@@ -260,6 +263,7 @@ AC_ARG_ADAPTERS([
   LIBFTDI_ADAPTERS,
   LIBFTDI_USB1_ADAPTERS
   LIBGPIOD_ADAPTERS,
+  AXI_ADAPTERS,
   SERIAL_PORT_ADAPTERS,
   LIBJAYLINK_ADAPTERS
   ],[auto])
@@ -341,6 +345,10 @@ AC_ARG_ENABLE([xlnx_pcie_xvc],
   AS_HELP_STRING([--enable-xlnx-pcie-xvc], [Enable building support for Xilinx XVC/PCIe.]),
   [build_xlnx_pcie_xvc=$enableval], [build_xlnx_pcie_xvc=no])
 
+AC_ARG_ENABLE([xlnx_axi_gpio],
+  AS_HELP_STRING([--enable-xlnx-axi-gpio], [Enable building support for Xilinx AXI GPIO.]),
+  [build_xlnx_axi_gpio=$enableval], [build_xlnx_axi_gpio=no])
+
 AS_CASE([$host_os],
   [linux*], [],
   [
@@ -354,6 +362,10 @@ AS_CASE([$host_os],
 
     AS_IF([test "x$build_xlnx_pcie_xvc" = "xyes"], [
       AC_MSG_ERROR([xlnx_pcie_xvc is only available on linux])
+    ])
+
+    AS_IF([test "x$build_xlnx_axi_gpio" = "xyes"], [
+      AC_MSG_ERROR([xlnx_axi_gpio is only available on linux])
     ])
 
     AS_CASE([$host_os], [freebsd*], [],
@@ -607,6 +619,14 @@ AS_IF([test "x$build_xlnx_pcie_xvc" = "xyes"], [
   AC_DEFINE([BUILD_XLNX_PCIE_XVC], [0], [0 if you don't want Xilinx XVC/PCIe driver.])
 ])
 
+AS_IF([test "x$build_xlnx_axi_gpio" = "xyes"], [
+  build_bitbang=yes
+  build_xlnx_axi_gpio=yes
+  AC_DEFINE([BUILD_XLNX_AXI_GPIO], [1], [1 if you want the Xilinx AXI GPIO driver.])
+], [
+  AC_DEFINE([BUILD_XLNX_AXI_GPIO], [0], [0 if you don't want Xilinx AXI GPIO driver.])
+])
+
 PKG_CHECK_MODULES([LIBUSB1], [libusb-1.0], [
 	use_libusb1=yes
 	AC_DEFINE([HAVE_LIBUSB1], [1], [Define if you have libusb-1.x])
@@ -748,6 +768,7 @@ AM_CONDITIONAL([REMOTE_BITBANG], [test "x$build_remote_bitbang" = "xyes"])
 AM_CONDITIONAL([BUSPIRATE], [test "x$enable_buspirate" != "xno"])
 AM_CONDITIONAL([SYSFSGPIO], [test "x$build_sysfsgpio" = "xyes"])
 AM_CONDITIONAL([XLNX_PCIE_XVC], [test "x$build_xlnx_pcie_xvc" = "xyes"])
+AM_CONDITIONAL([XLNX_AXI_GPIO], [test "x$build_xlnx_axi_gpio" = "xyes"])
 AM_CONDITIONAL([USE_LIBUSB1], [test "x$use_libusb1" = "xyes"])
 AM_CONDITIONAL([IS_CYGWIN], [test "x$is_cygwin" = "xyes"])
 AM_CONDITIONAL([IS_MINGW], [test "x$is_mingw" = "xyes"])
@@ -831,7 +852,7 @@ m4_foreach([adapter], [USB1_ADAPTERS,
 	DEPRECATED_USB1_ADAPTERS,
 	HIDAPI_ADAPTERS, HIDAPI_USB1_ADAPTERS, LIBFTDI_ADAPTERS,
 	LIBFTDI_USB1_ADAPTERS,
-	LIBGPIOD_ADAPTERS,
+	LIBGPIOD_ADAPTERS, AXI_ADAPTERS,
 	LIBJAYLINK_ADAPTERS, PCIE_ADAPTERS, SERIAL_PORT_ADAPTERS,
 	OPTIONAL_LIBRARIES],
 	[s=m4_format(["%-40s"], ADAPTER_DESC([adapter]))

@@ -606,6 +606,9 @@ emulation model of target hardware.
 @item @b{xlnx_pcie_xvc}
 @* A JTAG driver exposing Xilinx Virtual Cable over PCI Express to OpenOCD as JTAG/SWD interface.
 
+@item @b{xlnx_axi_gpio}
+@* A Xilinx AXI GPIO JTAG driver.
+
 @item @b{linuxgpiod}
 @* A bitbang JTAG driver using Linux GPIO through library libgpiod.
 

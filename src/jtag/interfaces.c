@@ -118,6 +118,9 @@ extern struct adapter_driver linuxgpiod_adapter_driver;
 #if BUILD_XLNX_PCIE_XVC == 1
 extern struct adapter_driver xlnx_pcie_xvc_adapter_driver;
 #endif
+#if BUILD_XLNX_AXI_GPIO == 1
+extern struct adapter_driver xlnx_axi_gpio_adapter_driver;
+#endif
 #if BUILD_AICE == 1
 extern struct adapter_driver aice_adapter_driver;
 #endif
@@ -237,6 +240,9 @@ struct adapter_driver *adapter_drivers[] = {
 #endif
 #if BUILD_XLNX_PCIE_XVC == 1
 		&xlnx_pcie_xvc_adapter_driver,
+#endif
+#if BUILD_XLNX_AXI_GPIO == 1
+		&xlnx_axi_gpio_adapter_driver,
 #endif
 #if BUILD_AICE == 1
 		&aice_adapter_driver,
