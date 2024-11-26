@@ -123,8 +123,9 @@ struct adapter_driver *adapter_drivers[] = {
 #if BUILD_LINUXGPIOD == 1
 		&linuxgpiod_adapter_driver,
 #endif
-#if BUILD_XLNX_PCIE_XVC == 1
+#if BUILD_XLNX_XVC == 1
 		&xlnx_pcie_xvc_adapter_driver,
+		&xlnx_axi_xvc_adapter_driver,
 #endif
 #if BUILD_BCM2835GPIO == 1
 		&bcm2835gpio_adapter_driver,

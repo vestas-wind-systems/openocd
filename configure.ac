@@ -158,7 +158,10 @@ m4_define([LIBJAYLINK_ADAPTERS],
 	[[[jlink], [SEGGER J-Link Programmer], [JLINK]]])
 
 m4_define([PCIE_ADAPTERS],
-	[[[xlnx_pcie_xvc], [Xilinx XVC/PCIe], [XLNX_PCIE_XVC]]])
+	[[[xlnx_pcie_xvc], [Xilinx XVC/PCIe], [XLNX_XVC]]])
+
+m4_define([AXI_ADAPTERS],
+	[[[xlnx_axi_xvc], [Xilinx XVC/AXI], [XLNX_XVC]]])
 
 m4_define([SERIAL_PORT_ADAPTERS],
 	[[[buspirate], [Bus Pirate], [BUS_PIRATE]]])
@@ -291,6 +294,7 @@ AC_ARG_ADAPTERS([
   LIBGPIOD_ADAPTERS,
   SERIAL_PORT_ADAPTERS,
   PCIE_ADAPTERS,
+  AXI_ADAPTERS,
   LIBJAYLINK_ADAPTERS
   ],[auto])
 
@@ -374,6 +378,10 @@ AS_CASE([$host_os],
   [
     AS_IF([test "x$build_sysfsgpio" = "xyes"], [
       AC_MSG_ERROR([sysfsgpio is only available on linux])
+    ])
+
+    AS_IF([test "x$enable_linuxgpiod" = "xyes"], [
+      AC_MSG_ERROR([linuxgpiod is only available on linux])
     ])
 
     AS_CASE([$host_os], [freebsd*], [],
@@ -724,7 +732,8 @@ PROCESS_ADAPTERS([LIBFTDI_ADAPTERS], ["x$use_libftdi" = "xyes"], [libftdi])
 PROCESS_ADAPTERS([LIBFTDI_USB1_ADAPTERS], ["x$use_libftdi" = "xyes" -a "x$use_libusb1" = "xyes"], [libftdi and libusb-1.x])
 PROCESS_ADAPTERS([LIBGPIOD_ADAPTERS], ["x$use_libgpiod" = "xyes"], [Linux libgpiod])
 PROCESS_ADAPTERS([LIBJAYLINK_ADAPTERS], ["x$use_internal_libjaylink" = "xyes" -o "x$use_libjaylink" = "xyes"], [libjaylink-0.2])
-PROCESS_ADAPTERS([PCIE_ADAPTERS], ["x$is_linux" = "xyes"], [Linux build])
+PROCESS_ADAPTERS([PCIE_ADAPTERS], ["x$is_linux" = "xyes" -a "x$use_libgpiod" = "xyes"], [Linux build and libgpiod])
+PROCESS_ADAPTERS([AXI_ADAPTERS], ["x$is_linux" = "xyes" -a "x$use_libgpiod" = "xyes"], [Linux build and libgpiod])
 PROCESS_ADAPTERS([SERIAL_PORT_ADAPTERS], ["x$can_build_buspirate" = "xyes"],
                                          [internal error: validation should happen beforehand])
 PROCESS_ADAPTERS([DUMMY_ADAPTER], [true], [unused])
@@ -875,7 +884,8 @@ m4_foreach([adapter], [USB1_ADAPTERS,
 	HIDAPI_ADAPTERS, HIDAPI_USB1_ADAPTERS, LIBFTDI_ADAPTERS,
 	LIBFTDI_USB1_ADAPTERS,
 	LIBGPIOD_ADAPTERS,
-	LIBJAYLINK_ADAPTERS, PCIE_ADAPTERS, SERIAL_PORT_ADAPTERS,
+	LIBJAYLINK_ADAPTERS, PCIE_ADAPTERS,
+	AXI_ADAPTERS, SERIAL_PORT_ADAPTERS,
 	DUMMY_ADAPTER,
 	OPTIONAL_LIBRARIES,
 	COVERAGE],
