@@ -42,8 +42,9 @@
 #define XLNX_XVC_TDI_REG				 0x08
 #define XLNX_XVC_TDO_REG				 0x0c
 #define XLNX_XVC_CTRL_REG				 0x10
-#define XLNX_XVC_DIV_REG				 0x14		/* Non-standard register added to Xilinx HDL -- JG */
-#define XLNX_XVC_MAX_REG				 0x18
+/* #define XLNX_XVC_DIV_REG				 0x14		/\* Non-standard register added to Xilinx HDL -- JG *\/ */
+/* #define XLNX_XVC_MAX_REG				 0x18 */
+#define XLNX_XVC_MAX_REG				 0x14
 
 #define XLNX_XVC_CTRL_REG_ENABLE_MASK	 0x01
 
@@ -511,6 +512,7 @@ static int xlnx_axi_xvc_quit(void)
 	return ERROR_OK;
 }
 
+/*
 static int xlnx_axi_xvc_speed(int speed)
 {
 	uint8_t *b = (uint8_t *)xlnx_axi_xvc->baseaddr + XLNX_XVC_DIV_REG;
@@ -551,6 +553,7 @@ static int xlnx_axi_xvc_div(int speed, int *khz)
 
 	return ERROR_OK;
 }
+*/
 
 
 COMMAND_HANDLER(xlnx_axi_xvc_handle_devaddr_command)
@@ -846,9 +849,9 @@ struct adapter_driver xlnx_axi_xvc_adapter_driver = {
 
 	.init = &xlnx_axi_xvc_init,
 	.quit = &xlnx_axi_xvc_quit,
-	.speed = &xlnx_axi_xvc_speed,
-	.khz = &xlnx_axi_xvc_khz,
-	.speed_div = &xlnx_axi_xvc_div,
+	/* .speed = &xlnx_axi_xvc_speed, */
+	/* .khz = &xlnx_axi_xvc_khz, */
+	/* .speed_div = &xlnx_axi_xvc_div, */
 
 	.jtag_ops = &xlnx_axi_xvc_jtag_ops,
 	.swd_ops  = &xlnx_axi_xvc_swd_ops,
