@@ -241,9 +241,9 @@ static int xlnx_axi_xvc_execute_pathmove(struct jtag_command *cmd)
 
 	for (i = 0; i < num_states; i++) {
 		if (path[i] == tap_state_transition(tap_get_state(), false)) {
-			err = xlnx_axi_xvc_transact(1, 1, 0, NULL);
-		} else if (path[i] == tap_state_transition(tap_get_state(), true)) {
 			err = xlnx_axi_xvc_transact(1, 0, 0, NULL);
+		} else if (path[i] == tap_state_transition(tap_get_state(), true)) {
+			err = xlnx_axi_xvc_transact(1, 1, 0, NULL);
 		} else {
 			LOG_ERROR("BUG: %s -> %s isn't a valid TAP transition.",
 				  tap_state_name(tap_get_state()),
